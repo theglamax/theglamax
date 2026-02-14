@@ -4,19 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="google-site-verification" content="TQMGcpGXsVXVjMKoIYVFxl8PUltmQ9u1vn1dqPogAUE" />
-    <title>Burning for you ✨</title>
+    <title>TheGlaMax | Vision ✨</title>
     <style>
         * { box-sizing: border-box; }
         body {
-            background-color: #f4ece4;
-            background-image: url('https://www.transparenttextures.com/patterns/wood-pattern-light.png');
+            /* Современный градиент */
+            background: linear-gradient(125deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
             margin: 0;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            font-family: "Georgia", serif;
+            /* Шрифт как у Apple */
+            font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
         }
 
         #smoke-canvas {
@@ -24,69 +25,86 @@
             top: 0;
             left: 0;
             pointer-events: none;
-            z-index: 5;
+            z-index: 1;
         }
 
-        #board {
+        #content {
             position: relative;
             width: 90%;
-            max-width: 440px;
-            background: rgba(250, 247, 242, 0.9);
-            padding: 50px 30px;
-            border-radius: 2px;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.1);
-            text-align: center;
+            max-width: 600px;
+            text-align: left; /* Современный стиль любит выравнивание по левому краю */
             z-index: 10;
-            border: 1px solid rgba(0,0,0,0.05);
+            padding: 20px;
         }
 
         #text-box {
-            font-size: 20px;
-            line-height: 1.7;
-            min-height: 280px;
-            color: #3e2723;
-            font-weight: 600;
+            font-size: 28px;
+            line-height: 1.3;
+            min-height: 300px;
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 800;
+            letter-spacing: -0.02em;
         }
 
-        /* Эффект выжигания буквы */
-        .burn {
+        /* Эффект появления буквы */
+        .reveal {
             display: inline-block;
-            animation: burn-in 0.8s ease-out forwards;
+            animation: glow-in 0.6s ease-out forwards;
             position: relative;
         }
 
-        @keyframes burn-in {
-            0% { color: #ff4500; filter: blur(2px) brightness(3); opacity: 0; transform: scale(1.2); }
-            20% { color: #ff8c00; filter: blur(1px) brightness(2); opacity: 1; }
-            100% { color: #3e2723; filter: blur(0); opacity: 1; transform: scale(1); text-shadow: 0px 1px 1px rgba(255,255,255,0.5); }
+        @keyframes glow-in {
+            0% { 
+                opacity: 0; 
+                filter: blur(10px); 
+                transform: translateY(10px) scale(0.9);
+                color: #8b5cf6; /* Фиолетовое свечение в начале */
+            }
+            50% {
+                color: #ec4899; /* Перелив в розовый */
+                filter: blur(5px);
+            }
+            100% { 
+                opacity: 1; 
+                filter: blur(0); 
+                transform: translateY(0) scale(1);
+                color: white;
+            }
+        }
+
+        .highlight {
+            background: linear-gradient(90deg, #ff4d6d, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
         }
 
         .tg-btn {
             display: none;
-            margin-top: 40px;
-            padding: 18px;
-            background: #3e2723;
-            color: #f4ece4;
+            margin-top: 50px;
+            padding: 20px 40px;
+            background: white;
+            color: #0f172a;
             text-decoration: none;
-            font-weight: bold;
-            font-size: 16px;
-            width: 100%;
-            border-radius: 0;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            animation: fadeIn 1s;
+            font-weight: 700;
+            font-size: 18px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3), 0 0 20px rgba(139, 92, 246, 0.4);
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.2s ease;
         }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .tg-btn:active { transform: scale(0.96); }
     </style>
 </head>
 <body>
 
 <canvas id="smoke-canvas"></canvas>
 
-<div id="board">
+<div id="content">
     <div id="text-box"></div>
-    <a href="https://t.me/theglamax" id="btn" class="tg-btn">Пойти пить чай ☕️</a>
+    <a href="https://t.me/theglamax" id="btn" class="tg-btn">Давай просто выпьем чаю ☕️</a>
 </div>
 
 <script>
@@ -101,33 +119,32 @@
     window.addEventListener('resize', resize);
     resize();
 
-    class SmokeParticle {
+    class Particle {
         constructor(x, y) {
             this.x = x;
             this.y = y;
-            this.size = Math.random() * 20 + 10;
-            this.speedY = Math.random() * -1.5 - 0.5;
-            this.speedX = Math.random() * 1 - 0.5;
-            this.opacity = 0.5;
-            this.blur = Math.random() * 5 + 5;
+            this.size = Math.random() * 15 + 5;
+            this.speedY = Math.random() * -0.8 - 0.2;
+            this.speedX = Math.random() * 0.6 - 0.3;
+            this.opacity = 0.4;
+            // Цвет дыма с легким оттенком фиолетового
+            this.color = Math.random() > 0.5 ? '139, 92, 246' : '236, 72, 153';
         }
         update() {
             this.y += this.speedY;
             this.x += this.speedX;
-            this.opacity -= 0.005;
-            this.size += 0.5;
+            this.opacity -= 0.003;
+            this.size += 0.2;
         }
         draw() {
-            ctx.fillStyle = `rgba(100, 100, 100, ${this.opacity})`;
-            ctx.filter = `blur(${this.blur}px)`;
+            ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
             ctx.fill();
-            ctx.filter = 'none';
         }
     }
 
-    function animateSmoke() {
+    function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         for (let i = 0; i < particles.length; i++) {
             particles[i].update();
@@ -137,24 +154,24 @@
                 i--;
             }
         }
-        requestAnimationFrame(animateSmoke);
+        requestAnimationFrame(animate);
     }
-    animateSmoke();
+    animate();
 
     const content = [
         "Слушай...",
         "Я полдня воевал с этим кодом. 👨‍💻",
         "Гитхаб ругался, сервер падал,",
         "я чуть не разбил макбук...",
-        "И всё ради того, чтобы ты это увидела.",
+        "Но я хотел, чтобы ты увидела это.",
         " ",
-        "Ты слишком особенная",
-        "для обычных «Привет». ✨",
+        "Ты <span class='highlight'>слишком особенная</span>",
+        "для обычных сообщений. ✨",
         " ",
         "Мой план простой:",
         "1. Ты сейчас улыбаешься.",
-        "2. Нажимаешь кнопку ниже.",
-        "3. Мы идем пить лучший чай. ☕️",
+        "2. Нажимаешь на кнопку.",
+        "3. Мы идем пить лучший чай.",
         " ",
         "Что скажешь?"
     ];
@@ -165,26 +182,38 @@
     function type() {
         if (l < content.length) {
             if (i < content[l].length) {
-                const char = content[l].charAt(i);
-                const span = document.createElement('span');
-                span.className = 'burn';
-                span.innerHTML = char === " " ? "&nbsp;" : char;
-                box.appendChild(span);
+                if (content[l].charAt(i) === '<') {
+                    let tag = "";
+                    while (content[l].charAt(i) !== '>') {
+                        tag += content[l].charAt(i);
+                        i++;
+                    }
+                    tag += '>';
+                    box.innerHTML += tag;
+                    i++;
+                }
                 
-                if (char !== " ") {
+                const char = content[l].charAt(i);
+                if (char) {
+                    const span = document.createElement('span');
+                    span.className = 'reveal';
+                    span.innerHTML = char === " " ? "&nbsp;" : char;
+                    box.appendChild(span);
+                    
                     const rect = span.getBoundingClientRect();
-                    // Создаем дым из буквы
-                    for(let k=0; k<3; k++) {
-                        particles.push(new SmokeParticle(rect.left + rect.width/2, rect.top + rect.height/2));
+                    if (char !== " ") {
+                        for(let k=0; k<2; k++) {
+                            particles.push(new Particle(rect.left + rect.width/2, rect.top + rect.height/2));
+                        }
                     }
                 }
 
                 i++; 
-                setTimeout(type, 130); 
+                setTimeout(type, 100); 
             } else {
                 box.innerHTML += "<br>";
                 l++; i = 0; 
-                setTimeout(type, 800);
+                setTimeout(type, 600);
             }
         } else {
             document.getElementById('btn').style.display = 'block';
