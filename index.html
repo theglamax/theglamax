@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="TQMGcpGXsVXVjMKoIYVFxl8PUltmQ9u1vn1dqPogAUE" />
     <title>Специальное послание ✨</title>
     <style>
         body {
@@ -49,10 +50,6 @@
         }
         @keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
         .tg-btn:hover { transform: scale(1.05); background: #ff335c; }
-        
-        /* Декор */
-        .cursor { display: inline-block; width: 3px; height: 24px; background: #ff4d6d; margin-left: 5px; animation: blink 0.8s infinite; }
-        @keyframes blink { 50% { opacity: 0; } }
     </style>
 </head>
 <body>
@@ -87,7 +84,6 @@
     function type() {
         if (l < content.length) {
             if (i < content[l].length) {
-                // Обработка HTML тегов внутри строк
                 if (content[l].charAt(i) === '<') {
                     let tag = "";
                     while (content[l].charAt(i) !== '>') {
@@ -98,20 +94,23 @@
                     box.innerHTML += tag;
                     i++;
                 }
-                box.innerHTML += content[l].charAt(i);
-                i++; setTimeout(type, 40);
+                if (i < content[l].length) {
+                    box.innerHTML += content[l].charAt(i);
+                    i++; setTimeout(type, 40);
+                } else {
+                    type(); 
+                }
             } else {
                 box.innerHTML += "<br>";
                 l++; i = 0; 
-                // Пауза после важных фраз
                 let delay = content[l-1].length > 1 ? 800 : 300;
                 setTimeout(type, delay);
             }
         } else {
             document.getElementById('btn').style.display = 'inline-block';
         }
+    }
     window.onload = type;
 </script>
 </body>
 </html>
-
