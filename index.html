@@ -4,14 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="google-site-verification" content="TQMGcpGXsVXVjMKoIYVFxl8PUltmQ9u1vn1dqPogAUE" />
-    <title>Handcrafted for you ✨</title>
+    <title>Special for you ✨</title>
     <style>
         * { box-sizing: border-box; }
         body {
-            background-color: #1a0f0a;
-            background-image: url('https://www.transparenttextures.com/patterns/dark-wood.png');
-            color: #d4a373; 
-            font-family: "Courier New", Courier, monospace;
+            /* Текстура светлого дерева (дуб/ясень) */
+            background-color: #f4ece4;
+            background-image: url('https://www.transparenttextures.com/patterns/pinstriped-suit.png'); /* Мягкая текстура волокон */
+            color: #5d4037; 
+            font-family: "Georgia", serif; /* Более элегантный шрифт */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -19,102 +20,142 @@
             margin: 0;
             padding: 20px;
             overflow: hidden;
-            transition: transform 0.05s;
         }
 
         #board {
             position: relative;
             width: 100%;
-            max-width: 450px;
-            background: rgba(35, 22, 16, 0.9);
-            padding: 40px 25px;
-            border: 12px solid #2d1b14;
-            box-shadow: inset 0 0 60px #000, 0 25px 50px rgba(0,0,0,0.6);
+            max-width: 440px;
+            background: #faf7f2;
+            padding: 50px 30px;
+            border-radius: 4px;
+            /* Эффект фаски на дереве */
+            box-shadow: 
+                0 10px 30px rgba(0,0,0,0.05),
+                inset 0 0 100px rgba(212, 163, 115, 0.1);
+            border: 1px solid rgba(0,0,0,0.05);
             text-align: center;
+            z-index: 10;
         }
 
         #text-box {
             font-size: 20px;
-            line-height: 1.6;
-            min-height: 260px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #e9edc9; /* Светлый цвет "среза" */
+            line-height: 1.7;
+            min-height: 280px;
+            font-weight: 500;
+            font-style: italic;
+            color: #5d4037;
         }
 
-        /* Эффект выбитой буквы */
+        /* Эффект выжженного/выдавленного текста */
         .carved {
             display: inline-block;
-            text-shadow: -2px -2px 2px #000, 1px 1px 0px rgba(255,255,255,0.1);
-            animation: hit 0.12s ease-out;
+            opacity: 0;
+            transform: scale(1.2);
+            filter: blur(1px);
+            transition: all 0.1s ease-out;
+            color: #3e2723;
+            text-shadow: 0px 1px 1px rgba(255,255,255,0.8);
         }
 
-        @keyframes hit {
-            0% { transform: scale(1.8); opacity: 0; filter: brightness(2); }
-            100% { transform: scale(1); opacity: 1; filter: brightness(1); }
+        .carved.visible {
+            opacity: 0.9;
+            transform: scale(1);
+            filter: blur(0);
         }
 
-        /* Тряска экрана */
-        .shake-effect {
-            animation: shake-screen 0.1s;
+        /* Светлые опилки/пыль */
+        .chip {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #d7ccc8;
+            pointer-events: none;
+            z-index: 100;
+            border-radius: 50%;
         }
 
-        @keyframes shake-screen {
-            0% { transform: translate(2px, 2px); }
-            25% { transform: translate(-2px, -2px); }
-            50% { transform: translate(1px, -1px); }
+        /* Мягкая встряска */
+        .shake-effect { animation: soft-shake 0.1s; }
+        @keyframes soft-shake {
+            0% { transform: translate(1px, 1px); }
             100% { transform: translate(0, 0); }
         }
 
         .tg-btn {
             display: none;
-            margin-top: 30px;
-            padding: 20px;
-            background: #d4a373;
-            color: #1a0f0a;
+            margin-top: 40px;
+            padding: 18px;
+            background: #5d4037;
+            color: #faf7f2;
             text-decoration: none;
-            font-weight: 900;
-            font-size: 18px;
+            font-weight: bold;
+            font-size: 16px;
             width: 100%;
-            border: none;
-            box-shadow: 0 6px 0 #8b5e34;
-            transition: 0.1s;
+            border-radius: 2px;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(93, 64, 55, 0.2);
+            transition: all 0.3s;
             text-transform: uppercase;
         }
-
-        .tg-btn:active {
-            transform: translateY(4px);
-            box-shadow: 0 2px 0 #8b5e34;
-        }
+        
+        .tg-btn:hover { background: #4e342e; transform: translateY(-2px); }
     </style>
 </head>
 <body id="body">
 
 <div id="board">
     <div id="text-box"></div>
-    <a href="https://t.me/theglamax" id="btn" class="tg-btn">Связаться с мастером 🛠</a>
+    <a href="https://t.me/theglamax" id="btn" class="tg-btn">Давай просто выпьем чаю ☕️</a>
 </div>
 
 <script>
     const content = [
-        "Внимание...",
-        "Работа кипела долго.",
-        "Код ломался, металл гнулся.",
+        "Слушай...",
+        "Я полдня воевал с этим кодом. 👨‍💻",
+        "Гитхаб ругался, сервер падал,",
+        "я чуть не разбил макбук...",
+        "И всё ради того, чтобы ты это увидела.",
         " ",
-        "Но я вырубил это специально",
-        "ДЛЯ ТЕБЯ.",
+        "Ты слишком особенная",
+        "для обычных «Привет». ✨",
         " ",
-        "Ты — настоящий шедевр.",
-        "Остальное — просто шум.",
+        "Мой план простой:",
+        "1. Ты сейчас улыбаешься.",
+        "2. Нажимаешь кнопку ниже.",
+        "3. Мы идем пить лучший чай. ☕️",
         " ",
-        "Пора бросать инструменты.",
-        "Пойдем пить чай? ☕️"
+        "Что скажешь?"
     ];
 
     let l = 0, i = 0;
     const box = document.getElementById('text-box');
     const body = document.getElementById('body');
+
+    function createDust(x, y) {
+        for (let k = 0; k < 6; k++) {
+            const chip = document.createElement('div');
+            chip.className = 'chip';
+            document.body.appendChild(chip);
+            
+            chip.style.left = x + 'px';
+            chip.style.top = y + 'px';
+
+            const angle = Math.random() * Math.PI * 2;
+            const velocity = Math.random() * 60 + 30;
+            const dx = Math.cos(angle) * velocity;
+            const dy = Math.sin(angle) * velocity;
+
+            const animation = chip.animate([
+                { transform: 'translate(0, 0)', opacity: 0.8 },
+                { transform: `translate(${dx}px, ${dy}px)`, opacity: 0 }
+            ], {
+                duration: 800,
+                easing: 'ease-out'
+            });
+            animation.onfinish = () => chip.remove();
+        }
+    }
 
     function type() {
         if (l < content.length) {
@@ -125,20 +166,27 @@
                 span.innerHTML = char === " " ? "&nbsp;" : char;
                 box.appendChild(span);
                 
-                // Трясем экран при каждом ударе
-                body.classList.remove('shake-effect');
-                void body.offsetWidth; 
-                body.classList.add('shake-effect');
+                // Проявляем букву
+                setTimeout(() => span.classList.add('visible'), 10);
                 
+                const rect = span.getBoundingClientRect();
+                if (char !== " ") {
+                    createDust(rect.left + rect.width/2, rect.top + rect.height/2);
+                    body.classList.remove('shake-effect');
+                    void body.offsetWidth; 
+                    body.classList.add('shake-effect');
+                }
+
                 i++; 
-                setTimeout(type, 160); // Скорость ударов молотком
+                setTimeout(type, 140); 
             } else {
                 box.innerHTML += "<br>";
                 l++; i = 0; 
-                setTimeout(type, 900);
+                setTimeout(type, 800);
             }
         } else {
-            document.getElementById('btn').style.display = 'block';
+            const btn = document.getElementById('btn');
+            btn.style.display = 'block';
         }
     }
     window.onload = type;
