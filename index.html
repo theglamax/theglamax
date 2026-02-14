@@ -2,112 +2,143 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="google-site-verification" content="TQMGcpGXsVXVjMKoIYVFxl8PUltmQ9u1vn1dqPogAUE" />
-    <title>Специальное послание ✨</title>
+    <title>Handcrafted for you ✨</title>
     <style>
+        * { box-sizing: border-box; }
         body {
-            background: #fffafa;
-            color: #333;
-            font-family: -apple-system, system-ui, sans-serif;
+            background-color: #1a0f0a;
+            background-image: url('https://www.transparenttextures.com/patterns/dark-wood.png');
+            color: #d4a373; 
+            font-family: "Courier New", Courier, monospace;
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
+            padding: 20px;
             overflow: hidden;
+            transition: transform 0.05s;
         }
-        #container {
+
+        #board {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            background: rgba(35, 22, 16, 0.9);
+            padding: 40px 25px;
+            border: 12px solid #2d1b14;
+            box-shadow: inset 0 0 60px #000, 0 25px 50px rgba(0,0,0,0.6);
             text-align: center;
-            padding: 30px;
-            max-width: 600px;
-            width: 90%;
         }
+
         #text-box {
-            font-size: 22px;
+            font-size: 20px;
             line-height: 1.6;
-            min-height: 200px;
-            font-weight: 500;
-            color: #444;
+            min-height: 260px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #e9edc9; /* Светлый цвет "среза" */
         }
-        .highlight {
-            color: #ff4d6d;
-            font-weight: 700;
+
+        /* Эффект выбитой буквы */
+        .carved {
+            display: inline-block;
+            text-shadow: -2px -2px 2px #000, 1px 1px 0px rgba(255,255,255,0.1);
+            animation: hit 0.12s ease-out;
         }
+
+        @keyframes hit {
+            0% { transform: scale(1.8); opacity: 0; filter: brightness(2); }
+            100% { transform: scale(1); opacity: 1; filter: brightness(1); }
+        }
+
+        /* Тряска экрана */
+        .shake-effect {
+            animation: shake-screen 0.1s;
+        }
+
+        @keyframes shake-screen {
+            0% { transform: translate(2px, 2px); }
+            25% { transform: translate(-2px, -2px); }
+            50% { transform: translate(1px, -1px); }
+            100% { transform: translate(0, 0); }
+        }
+
         .tg-btn {
             display: none;
-            margin-top: 40px;
-            padding: 18px 45px;
-            background: #ff4d6d;
-            color: white;
+            margin-top: 30px;
+            padding: 20px;
+            background: #d4a373;
+            color: #1a0f0a;
             text-decoration: none;
-            border-radius: 100px;
-            font-weight: bold;
+            font-weight: 900;
             font-size: 18px;
-            box-shadow: 0 10px 25px rgba(255, 77, 109, 0.4);
-            transition: 0.3s;
-            animation: pop 0.5s cubic-bezier(0.26, 0.53, 0.74, 1.48);
+            width: 100%;
+            border: none;
+            box-shadow: 0 6px 0 #8b5e34;
+            transition: 0.1s;
+            text-transform: uppercase;
         }
-        @keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
-        .tg-btn:hover { transform: scale(1.05); background: #ff335c; }
+
+        .tg-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #8b5e34;
+        }
     </style>
 </head>
-<body>
-    <div id="container">
-        <div id="text-box"></div>
-        <a href="https://t.me/theglamax" id="btn" class="tg-btn">Сдаться и пойти пить чай ☕️</a>
-    </div>
+<body id="body">
+
+<div id="board">
+    <div id="text-box"></div>
+    <a href="https://t.me/theglamax" id="btn" class="tg-btn">Связаться с мастером 🛠</a>
+</div>
 
 <script>
     const content = [
-        "Слушай...",
-        "Я тут полдня воевал с этим кодом. 👨‍💻",
-        "Гитхаб ругался, сервер падал, ",
-        "я чуть не разбил макбук...",
-        "И всё ради того, чтобы ты увидела эти строки.",
+        "Внимание...",
+        "Работа кипела долго.",
+        "Код ломался, металл гнулся.",
         " ",
-        "Я мог бы просто прислать мем,",
-        "или написать обычное «Привет».",
-        "Но ты <span class='highlight'>слишком особенная</span> для обычных «Привет». ✨",
+        "Но я вырубил это специально",
+        "ДЛЯ ТЕБЯ.",
         " ",
-        "Поэтому вот мой костыльный, но искренний план:",
-        "1. Ты улыбаешься (надеюсь, это сработало).",
-        "2. Ты нажимаешь кнопку ниже.",
-        "3. Мы идем пить самый вкусный чай в городе.",
+        "Ты — настоящий шедевр.",
+        "Остальное — просто шум.",
         " ",
-        "Что скажешь?"
+        "Пора бросать инструменты.",
+        "Пойдем пить чай? ☕️"
     ];
 
     let l = 0, i = 0;
     const box = document.getElementById('text-box');
+    const body = document.getElementById('body');
 
     function type() {
         if (l < content.length) {
             if (i < content[l].length) {
-                if (content[l].charAt(i) === '<') {
-                    let tag = "";
-                    while (content[l].charAt(i) !== '>') {
-                        tag += content[l].charAt(i);
-                        i++;
-                    }
-                    tag += '>';
-                    box.innerHTML += tag;
-                    i++;
-                }
-                if (i < content[l].length) {
-                    box.innerHTML += content[l].charAt(i);
-                    i++; setTimeout(type, 40);
-                } else {
-                    type(); 
-                }
+                const char = content[l].charAt(i);
+                const span = document.createElement('span');
+                span.className = 'carved';
+                span.innerHTML = char === " " ? "&nbsp;" : char;
+                box.appendChild(span);
+                
+                // Трясем экран при каждом ударе
+                body.classList.remove('shake-effect');
+                void body.offsetWidth; 
+                body.classList.add('shake-effect');
+                
+                i++; 
+                setTimeout(type, 160); // Скорость ударов молотком
             } else {
                 box.innerHTML += "<br>";
                 l++; i = 0; 
-                let delay = content[l-1].length > 1 ? 800 : 300;
-                setTimeout(type, delay);
+                setTimeout(type, 900);
             }
         } else {
-            document.getElementById('btn').style.display = 'inline-block';
+            document.getElementById('btn').style.display = 'block';
         }
     }
     window.onload = type;
