@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="theglamax system protocol - tea invitation">
+    <title>theglamax</title>
+    <style>
+        body { background: #000; color: #ff69b4; font-family: 'Courier New', monospace; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; overflow: hidden; }
+        #terminal { width: 90%; max-width: 600px; border: 1px solid #ff69b4; padding: 25px; box-shadow: 0 0 20px #ff69b422; border-radius: 5px; }
+        .line { margin-bottom: 8px; font-size: 18px; font-weight: bold; }
+        .tg-btn { display: none; margin-top: 25px; padding: 12px 25px; border: 2px solid #ff69b4; color: #ff69b4; text-decoration: none; font-weight: bold; text-transform: uppercase; transition: 0.3s; cursor: pointer; }
+        .tg-btn:hover { background: #ff69b4; color: #000; box-shadow: 0 0 20px #ff69b4; }
+    </style>
+</head>
+<body>
+    <div id="terminal">
+        <div id="output"></div>
+        <a href="https://t.me/theglamax" id="btn" class="tg-btn">>>> ПРИНЯТЬ ПРИГЛАШЕНИЕ</a>
+    </div>
+<script>
+    const text = [
+        "> LOADING THEGLAMAX_CORE...",
+        "> [OK] SYSTEM READY",
+        "> [!] ВНИМАНИЕ: Обнаружена цель повышенной важности.",
+        " ",
+        "Я программист. Мой мир — нули и единицы,",
+        "Я дебажу всю жизнь, не смыкая ресницы.",
+        "Но тут я увидел тебя... и завис,",
+        "Система поплыла, пошел синий вис!",
+        " ",
+        "Давай пить чай? Это проще, чем код.",
+        "Ты просто классная. Это мой лог."
+    ];
+    let l = 0, i = 0; const out = document.getElementById('output');
+    function type() {
+        if (l < text.length) {
+            if (i < text[l].length) {
+                out.innerHTML += text[l].charAt(i); i++; setTimeout(type, 40);
+            } else {
+                out.innerHTML += "<br>"; l++; i = 0; setTimeout(type, 500);
+            }
+        } else { document.getElementById('btn').style.display = 'inline-block'; }
+    }
+    window.onload = type;
+</script>
+</body>
+</html>
