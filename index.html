@@ -2,44 +2,110 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="theglamax system protocol - tea invitation">
-    <title>theglamax</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THEGLAMAX // CORE_ACCESS</title>
     <style>
-        body { background: #000; color: #ff69b4; font-family: 'Courier New', monospace; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; overflow: hidden; }
-        #terminal { width: 90%; max-width: 600px; border: 1px solid #ff69b4; padding: 25px; box-shadow: 0 0 20px #ff69b422; border-radius: 5px; }
-        .line { margin-bottom: 8px; font-size: 18px; font-weight: bold; }
-        .tg-btn { display: none; margin-top: 25px; padding: 12px 25px; border: 2px solid #ff69b4; color: #ff69b4; text-decoration: none; font-weight: bold; text-transform: uppercase; transition: 0.3s; cursor: pointer; }
-        .tg-btn:hover { background: #ff69b4; color: #000; box-shadow: 0 0 20px #ff69b4; }
+        :root {
+            --neon: #ff00ff; /* Маджента / Розовый неон */
+            --bg: #050505;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--neon);
+            font-family: 'Consolas', 'Courier New', monospace;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            text-shadow: 0 0 10px rgba(255, 0, 255, 0.7);
+        }
+        #terminal {
+            width: 85%;
+            max-width: 700px;
+            border-left: 3px solid var(--neon);
+            padding: 40px;
+            background: rgba(255, 0, 255, 0.02);
+            box-shadow: -10px 0 30px rgba(255, 0, 255, 0.1);
+        }
+        .line {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+            min-height: 24px;
+        }
+        .system { color: #00ffff; font-size: 14px; text-transform: uppercase; opacity: 0.8; }
+        .tg-btn {
+            display: none;
+            margin-top: 40px;
+            padding: 15px 40px;
+            border: 2px solid var(--neon);
+            color: var(--neon);
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            transition: 0.3s;
+            position: relative;
+            background: transparent;
+        }
+        .tg-btn:hover {
+            background: var(--neon);
+            color: #000;
+            box-shadow: 0 0 50px var(--neon);
+            transform: scale(1.05);
+        }
+        .glitch { animation: glitch 2s infinite; }
+        @keyframes glitch {
+            0% { transform: skew(0deg); }
+            1% { transform: skew(10deg); opacity: 0.7; }
+            2% { transform: skew(-10deg); opacity: 1; }
+            3% { transform: skew(0deg); }
+        }
     </style>
 </head>
 <body>
     <div id="terminal">
+        <div class="system glitch">>>> incoming_signal... success</div>
+        <div class="system">>>> protocol: tea_time_v2.0</div>
+        <hr style="border: 0.5px solid #333; margin: 20px 0;">
         <div id="output"></div>
-        <a href="https://t.me/theglamax" id="btn" class="tg-btn">>>> ПРИНЯТЬ ПРИГЛАШЕНИЕ</a>
+        <a href="https://t.me/theglamax" id="btn" class="tg-btn">Initialize tea_protocol</a>
     </div>
+
 <script>
     const text = [
-        "> LOADING THEGLAMAX_CORE...",
-        "> [OK] SYSTEM READY",
-        "> [!] ВНИМАНИЕ: Обнаружена цель повышенной важности.",
-        " ",
         "Я программист. Мой мир — нули и единицы,",
         "Я дебажу всю жизнь, не смыкая ресницы.",
         "Но тут я увидел тебя... и завис,",
         "Система поплыла, пошел синий вис!",
         " ",
+        "Я стих сочинял, как дурак, полнедели,",
+        "Но вышли лишь баги (они надоели).",
+        "Я не Есенин, мой слог — как костыль,",
+        "Зато я не спам и не скучный утиль!",
+        " ",
         "Давай пить чай? Это проще, чем код.",
         "Ты просто классная. Это мой лог."
     ];
-    let l = 0, i = 0; const out = document.getElementById('output');
+    let l = 0, i = 0;
+    const out = document.getElementById('output');
     function type() {
         if (l < text.length) {
             if (i < text[l].length) {
-                out.innerHTML += text[l].charAt(i); i++; setTimeout(type, 40);
+                out.innerHTML += text[l].charAt(i);
+                i++; setTimeout(type, 35);
             } else {
-                out.innerHTML += "<br>"; l++; i = 0; setTimeout(type, 500);
+                out.innerHTML += "<br>";
+                l++; i = 0; setTimeout(type, 600);
             }
-        } else { document.getElementById('btn').style.display = 'inline-block'; }
+        } else {
+            const btn = document.getElementById('btn');
+            btn.style.display = 'inline-block';
+        }
     }
     window.onload = type;
 </script>
