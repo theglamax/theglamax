@@ -2,62 +2,110 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="TQMGcpGXsVXVjMKoIYVFxl8PUltmQ9u1vn1dqPogAUE" />
-    <title>THEGLAMAX | ДЛЯ ТЕБЯ ✨</title>
+    <title>THEGLAMAX | ENERGY 🔥</title>
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
         body, html {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            background: #0a0a0a; overflow: hidden;
-            font-family: 'Black Ops One', 'Impact', sans-serif;
-            display: flex; align-items: center; justify-content: center;
+            margin: 0; padding: 0;
+            background: #0a0a0a;
+            color: #fff;
+            font-family: 'Impact', sans-serif;
+            /* Разрешаем скролл */
+            overflow-y: auto; 
+            overflow-x: hidden;
+            width: 100%;
         }
 
         #bg-effect {
-            position: absolute; width: 100%; height: 100%;
+            position: fixed; /* Фон теперь зафиксирован */
+            top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at center, #2b0000 0%, #0a0a0a 100%);
-            z-index: 1;
+            z-index: -1;
         }
 
         #container {
-            position: relative; z-index: 10; width: 90%; 
-            max-width: 600px; text-align: left;
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px; /* Отступы сверху и снизу */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        #text-box {
+            width: 100%;
         }
 
         .line {
-            font-size: 32px; line-height: 1.1; font-weight: 900;
-            color: #fff; text-transform: uppercase; margin-bottom: 8px;
-            opacity: 0; transform: translateX(-100px) skewX(-15deg);
-            filter: blur(10px);
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 28px; /* Чуть меньше для мобилок */
+            line-height: 1.2;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            opacity: 0;
+            transform: translateX(-30px) skewX(-10deg);
+            filter: blur(5px);
+            transition: all 0.4s ease-out;
+            word-wrap: break-word; /* Чтобы длинные слова не ломали экран */
+        }
+
+        /* Адаптивность шрифта */
+        @media (max-width: 400px) {
+            .line { font-size: 22px; }
         }
 
         .line.active {
-            opacity: 1; transform: translateX(0) skewX(-10deg);
+            opacity: 1;
+            transform: translateX(0) skewX(-5deg);
             filter: blur(0);
         }
 
         .accent {
             color: #ff0055;
-            text-shadow: 0 0 20px #ff0055, 0 0 40px rgba(255, 0, 85, 0.5);
+            text-shadow: 0 0 15px #ff0055;
         }
 
         .btn-box {
-            margin-top: 40px; opacity: 0; transform: scale(0.5);
-            transition: 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s;
+            margin-top: 30px;
+            padding-bottom: 50px; /* Запас снизу, чтобы не прилипало */
+            opacity: 0;
+            transform: translateY(20px);
+            transition: 0.6s ease-out;
         }
-        .btn-box.show { opacity: 1; transform: scale(1); }
+
+        .btn-box.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
         .btn {
-            display: inline-block; padding: 22px 50px;
-            background: #ff0055; color: #fff;
-            text-decoration: none; font-weight: 900; font-size: 22px;
-            border-radius: 0; text-transform: uppercase;
-            box-shadow: 10px 10px 0 #fff;
+            display: block; /* На мобилках лучше во всю ширину */
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #ff0055;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 900;
+            font-size: 20px;
+            text-align: center;
+            text-transform: uppercase;
+            box-shadow: 6px 6px 0 #fff;
             transition: 0.2s;
         }
-        .btn:active { transform: translate(5px, 5px); box-shadow: 0 0 0 #fff; }
+
+        .btn:active {
+            transform: translate(3px, 3px);
+            box-shadow: 0 0 0 #fff;
+        }
     </style>
 </head>
 <body>
@@ -66,8 +114,8 @@
 
 <div id="container">
     <div id="text-box"></div>
-    <div id="btn-box">
-        <a href="https://t.me/theglamax" class="btn">ПОГНАЛИ ПИТЬ ЧАЙ? 🔥</a>
+    <div id="btn-box" class="btn-box">
+        <a href="https://t.me/theglamax" class="btn">ПОГНАЛИ ПИТЬ ЧАЙ 🔥</a>
     </div>
 </div>
 
@@ -90,7 +138,7 @@
     ];
 
     const box = document.getElementById('text-box');
-    const btnBox = document.getElementById('btn-box');
+    const btnBox = document.querySelector('.btn-box');
 
     async function start() {
         for (let i = 0; i < poem.length; i++) {
@@ -99,17 +147,23 @@
             div.innerHTML = poem[i];
             box.appendChild(div);
             
-            // Маленький хак для анимации
-            await new Promise(r => setTimeout(r, 50));
-            div.classList.add('active');
+            // Плавное появление
+            setTimeout(() => div.classList.add('active'), 50);
             
-            // Пауза между строками для чтения
-            await new Promise(r => setTimeout(r, 700));
+            // Тайминг под чтение
+            await new Promise(r => setTimeout(r, 750));
+            
+            // Авто-скролл вниз, пока идет текст
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            });
         }
         btnBox.classList.add('show');
     }
 
-    setTimeout(start, 500);
+    // Запуск через небольшую паузу
+    window.onload = () => setTimeout(start, 500);
 </script>
 </body>
 </html>
