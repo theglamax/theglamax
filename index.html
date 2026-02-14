@@ -4,112 +4,143 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="google-site-verification" content="TQMGcpGXsVXVjMKoIYVFxl8PUltmQ9u1vn1dqPogAUE" />
-    <title>Special for you ✨</title>
+    <title>Burning for you ✨</title>
     <style>
         * { box-sizing: border-box; }
         body {
-            /* Текстура светлого дерева (дуб/ясень) */
             background-color: #f4ece4;
-            background-image: url('https://www.transparenttextures.com/patterns/pinstriped-suit.png'); /* Мягкая текстура волокон */
-            color: #5d4037; 
-            font-family: "Georgia", serif; /* Более элегантный шрифт */
+            background-image: url('https://www.transparenttextures.com/patterns/wood-pattern-light.png');
+            margin: 0;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            overflow: hidden;
+            font-family: "Georgia", serif;
+        }
+
+        #smoke-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 5;
         }
 
         #board {
             position: relative;
-            width: 100%;
+            width: 90%;
             max-width: 440px;
-            background: #faf7f2;
+            background: rgba(250, 247, 242, 0.9);
             padding: 50px 30px;
-            border-radius: 4px;
-            /* Эффект фаски на дереве */
-            box-shadow: 
-                0 10px 30px rgba(0,0,0,0.05),
-                inset 0 0 100px rgba(212, 163, 115, 0.1);
-            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 2px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.1);
             text-align: center;
             z-index: 10;
+            border: 1px solid rgba(0,0,0,0.05);
         }
 
         #text-box {
             font-size: 20px;
             line-height: 1.7;
             min-height: 280px;
-            font-weight: 500;
-            font-style: italic;
-            color: #5d4037;
-        }
-
-        /* Эффект выжженного/выдавленного текста */
-        .carved {
-            display: inline-block;
-            opacity: 0;
-            transform: scale(1.2);
-            filter: blur(1px);
-            transition: all 0.1s ease-out;
             color: #3e2723;
-            text-shadow: 0px 1px 1px rgba(255,255,255,0.8);
+            font-weight: 600;
         }
 
-        .carved.visible {
-            opacity: 0.9;
-            transform: scale(1);
-            filter: blur(0);
+        /* Эффект выжигания буквы */
+        .burn {
+            display: inline-block;
+            animation: burn-in 0.8s ease-out forwards;
+            position: relative;
         }
 
-        /* Светлые опилки/пыль */
-        .chip {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: #d7ccc8;
-            pointer-events: none;
-            z-index: 100;
-            border-radius: 50%;
-        }
-
-        /* Мягкая встряска */
-        .shake-effect { animation: soft-shake 0.1s; }
-        @keyframes soft-shake {
-            0% { transform: translate(1px, 1px); }
-            100% { transform: translate(0, 0); }
+        @keyframes burn-in {
+            0% { color: #ff4500; filter: blur(2px) brightness(3); opacity: 0; transform: scale(1.2); }
+            20% { color: #ff8c00; filter: blur(1px) brightness(2); opacity: 1; }
+            100% { color: #3e2723; filter: blur(0); opacity: 1; transform: scale(1); text-shadow: 0px 1px 1px rgba(255,255,255,0.5); }
         }
 
         .tg-btn {
             display: none;
             margin-top: 40px;
             padding: 18px;
-            background: #5d4037;
-            color: #faf7f2;
+            background: #3e2723;
+            color: #f4ece4;
             text-decoration: none;
             font-weight: bold;
             font-size: 16px;
             width: 100%;
-            border-radius: 2px;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(93, 64, 55, 0.2);
-            transition: all 0.3s;
+            border-radius: 0;
             text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            animation: fadeIn 1s;
         }
-        
-        .tg-btn:hover { background: #4e342e; transform: translateY(-2px); }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
-<body id="body">
+<body>
+
+<canvas id="smoke-canvas"></canvas>
 
 <div id="board">
     <div id="text-box"></div>
-    <a href="https://t.me/theglamax" id="btn" class="tg-btn">Давай просто выпьем чаю ☕️</a>
+    <a href="https://t.me/theglamax" id="btn" class="tg-btn">Пойти пить чай ☕️</a>
 </div>
 
 <script>
+    const canvas = document.getElementById('smoke-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    class SmokeParticle {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.size = Math.random() * 20 + 10;
+            this.speedY = Math.random() * -1.5 - 0.5;
+            this.speedX = Math.random() * 1 - 0.5;
+            this.opacity = 0.5;
+            this.blur = Math.random() * 5 + 5;
+        }
+        update() {
+            this.y += this.speedY;
+            this.x += this.speedX;
+            this.opacity -= 0.005;
+            this.size += 0.5;
+        }
+        draw() {
+            ctx.fillStyle = `rgba(100, 100, 100, ${this.opacity})`;
+            ctx.filter = `blur(${this.blur}px)`;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.filter = 'none';
+        }
+    }
+
+    function animateSmoke() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw();
+            if (particles[i].opacity <= 0) {
+                particles.splice(i, 1);
+                i--;
+            }
+        }
+        requestAnimationFrame(animateSmoke);
+    }
+    animateSmoke();
+
     const content = [
         "Слушай...",
         "Я полдня воевал с этим кодом. 👨‍💻",
@@ -130,63 +161,33 @@
 
     let l = 0, i = 0;
     const box = document.getElementById('text-box');
-    const body = document.getElementById('body');
-
-    function createDust(x, y) {
-        for (let k = 0; k < 6; k++) {
-            const chip = document.createElement('div');
-            chip.className = 'chip';
-            document.body.appendChild(chip);
-            
-            chip.style.left = x + 'px';
-            chip.style.top = y + 'px';
-
-            const angle = Math.random() * Math.PI * 2;
-            const velocity = Math.random() * 60 + 30;
-            const dx = Math.cos(angle) * velocity;
-            const dy = Math.sin(angle) * velocity;
-
-            const animation = chip.animate([
-                { transform: 'translate(0, 0)', opacity: 0.8 },
-                { transform: `translate(${dx}px, ${dy}px)`, opacity: 0 }
-            ], {
-                duration: 800,
-                easing: 'ease-out'
-            });
-            animation.onfinish = () => chip.remove();
-        }
-    }
 
     function type() {
         if (l < content.length) {
             if (i < content[l].length) {
                 const char = content[l].charAt(i);
                 const span = document.createElement('span');
-                span.className = 'carved';
+                span.className = 'burn';
                 span.innerHTML = char === " " ? "&nbsp;" : char;
                 box.appendChild(span);
                 
-                // Проявляем букву
-                setTimeout(() => span.classList.add('visible'), 10);
-                
-                const rect = span.getBoundingClientRect();
                 if (char !== " ") {
-                    createDust(rect.left + rect.width/2, rect.top + rect.height/2);
-                    body.classList.remove('shake-effect');
-                    void body.offsetWidth; 
-                    body.classList.add('shake-effect');
+                    const rect = span.getBoundingClientRect();
+                    // Создаем дым из буквы
+                    for(let k=0; k<3; k++) {
+                        particles.push(new SmokeParticle(rect.left + rect.width/2, rect.top + rect.height/2));
+                    }
                 }
 
                 i++; 
-                setTimeout(type, 140); 
+                setTimeout(type, 130); 
             } else {
                 box.innerHTML += "<br>";
                 l++; i = 0; 
                 setTimeout(type, 800);
             }
         } else {
-            const btn = document.getElementById('btn');
-            btn.style.display = 'block';
+            document.getElementById('btn').style.display = 'block';
         }
     }
     window.onload = type;
