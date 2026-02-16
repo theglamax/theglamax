@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="TQMGcpGXsVXVjMKoIYVFxl8PUltmQ9u1vn1dqPogAUE" />
-    <title>THEGLAMAX2026</title>
+    <title>THEGLAMAX2026 (ерупдфьфч2026) — Твой Манифест</title>
+    <meta name="description" content="THEGLAMAX2026 (ерупдфьфч2026): Манифест жизни без скуки. Чай, разговоры, движение, свет.">
+    
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
@@ -25,6 +27,18 @@
             z-index: -1;
         }
 
+        /* Текст для Google (скрыт от глаз, но легален для роботов) */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
         #container {
             position: relative;
             z-index: 10;
@@ -36,15 +50,6 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-        }
-
-        /* Скрытая метка для робота Google, чтобы он точно знал слово */
-        .seo-tag {
-            position: absolute;
-            top: 0;
-            left: 0;
-            opacity: 0.01;
-            font-size: 1px;
         }
 
         #text-box { width: 100%; }
@@ -115,7 +120,11 @@
 </head>
 <body>
 
-<div class="seo-tag">THEGLAMAX2026 манифест для тебя</div>
+<div class="sr-only">
+    <h1>THEGLAMAX2026 (ерупдфьфч2026)</h1>
+    <p>Манифест: Слушай сюда, внимательно и в упор. Я забиваю на скуку и весь этот сор.</p>
+</div>
+
 <div id="bg-effect"></div>
 
 <div id="container">
@@ -153,6 +162,7 @@
             div.innerHTML = poem[i];
             box.appendChild(div);
             
+            // Плавная активация
             setTimeout(() => div.classList.add('active'), 50);
             
             await new Promise(r => setTimeout(r, 850));
@@ -165,7 +175,8 @@
         btnBox.classList.add('show');
     }
 
-    window.onload = () => setTimeout(start, 500);
+    // Запуск
+    window.onload = () => setTimeout(start, 400);
 </script>
 </body>
 </html>
